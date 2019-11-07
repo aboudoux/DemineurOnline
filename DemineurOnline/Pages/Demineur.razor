@@ -1,0 +1,95 @@
+﻿@page "/demineur"
+@using global::Demineur
+@using BlazorAnimate
+
+<div class="game-grid">
+    <div class="flag-number tooltip">
+        <span class="tooltiptext">CTRL+Click to put a flag</span>
+        <img src="Images/flag.png" />
+        <text>@MineField.FlaggedCellCount</text>
+    </div>
+    <div class="bomb-number">
+        <text>@MineField.BombCount</text>
+        <img src="Images/bomb.png" />
+    </div>
+    <text class="level"> @(MineField.Fail ? "Boom !" : MineField.Win ? "Good job !" : "LEVEL " + Game.Level)</text>
+    <div id="image-left" class="mine-sign" />
+    <div id="image-right" class="mine-sign" />
+
+    <div class="minefield">
+
+        @if (MineField.Fail)
+        {
+            <div class="end-animation">
+                <Animate Animation="Animations.ZoomIn" Duration="TimeSpan.FromSeconds(0.7)">
+                    <img src="Images/fail.jpg" />
+                    <button @onclick="Restart">RESTART</button>
+                </Animate>
+            </div>
+
+        }
+        else if (MineField.Win)
+        {
+            <div class="end-animation">
+                <Animate Animation="Animations.ZoomIn" Duration="TimeSpan.FromSeconds(0.7)">
+                    <img src="Images/win.jpg" />
+                    <button @onclick="NextLevel">NEXT LEVEL</button>
+
+                </Animate>
+            </div>
+        }
+        else
+        {
+            <div class="container" style="grid-template-columns: repeat(@MineField.ZoneSize, 31px); grid-template-rows: repeat(@MineField.ZoneSize, 31px);">
+                @{
+                    foreach (var cell in MineField)
+                    {
+                        <div @onclick="@((a) => Reveal(cell, a))" class="@SelectCss(cell)" style="grid-row-start: @cell.Row + 1; grid-column-start: @cell.Column + 1;">@(cell is NumberCell c ? c.Number.ToString() : string.Empty) </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+
+    private static Game Game { get; } = new Game();
+    private MineField MineField { get; set; } = Game.Start();
+
+    private void NextLevel() => MineField = Game.Next();
+
+    private void Restart() => MineField = Game.Start();
+    
+    private string SelectCss(ICell cell)
+    {
+        switch (cell)
+        {
+            case UndiscoveredCell c:
+                return "undiscovered-cell";
+            case NumberCell c:
+                return "number-cell";
+            case EmptyCell c:
+                return "empty-cell";
+            case BombCell c:
+                return "bomb-cell";
+            case FlaggedCell c:
+                return "flag-cell";
+            default:
+                throw new Exception("aucune css pour le type");
+        }
+    }
+
+
+    private void Reveal(ICell cell, MouseEventArgs args)
+    {
+        if (args.CtrlKey)
+            MineField.PoseFlag(cell);
+        else
+            MineField.Reveal(cell);
+    }
+}
+
+
+
+

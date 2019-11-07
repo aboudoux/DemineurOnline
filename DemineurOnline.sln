@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemineurOnline", "DemineurO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemineurOnline.Tests", "DemineurOnline.Tests\DemineurOnline.Tests.csproj", "{44F74E9C-0A7D-46FE-8B79-1D5B4EA633A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demineur", "Demineur\Demineur.csproj", "{CA0D5FDF-5EC0-4F92-86C0-E09BBB9BB902}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demineur", "Demineur\Demineur.csproj", "{CA0D5FDF-5EC0-4F92-86C0-E09BBB9BB902}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,14 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DemineurOnline</title>
     <base href="~/" />
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/segment7" type="text/css" />
 </head>
 <body>
     <app>
         @(await Html.RenderComponentAsync<App>(RenderMode.ServerPrerendered))
     </app>
 
-    <script src="_framework/blazor.server.js"></script>
+<script src="_framework/blazor.server.js"></script>
+<script src="_content/BlazorAnimate/blazorAnimateInterop.js"></script>
 </body>
 </html>
