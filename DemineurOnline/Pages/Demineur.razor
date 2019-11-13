@@ -46,10 +46,16 @@
                     {
                         <div @onclick="@((a) => Clicked(cell, a))" @ontouchstart="@((a) => Tapped(cell, a))" class="@SelectCss(cell)" style="grid-row-start: @cell.Row + 1; grid-column-start: @cell.Column + 1;">@(cell is NumberCell c ? c.Number.ToString() : string.Empty) </div>
                     }
-                }
+                }                              
             </div>
         }
-    </div>
+            <div class="help">
+                <ul>
+                    <li>On computer : Left click on a cell to reveal it, CTRL + click to put a flag on a cell</li>
+                    <li>On a phone  : Tap on a cell to reveal it, put a finger out of the minefield + tap on a cell to put a flag on it</li>
+                </ul>                
+            </div>
+    </div>    
 </div>
 
 @code {

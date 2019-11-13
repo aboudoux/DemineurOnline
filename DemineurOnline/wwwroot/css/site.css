@@ -49,11 +49,12 @@ body {
 }
 
 
-	.container {
-		display: grid;
-	}
+.container {
+	display: grid;
+	justify-content: center;
+}
 
-	/* home */
+/* home */
 	.home-grid {
 		grid-template-rows: 100px 100px 500px;
 	}
@@ -219,6 +220,15 @@ body {
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
 	visibility: visible;
+}
+
+.help {
+	margin: 20px;
+	margin-top: 50px;
+	border: gray solid 1px;
+	border-radius: 40px;
+	padding: 2px;
+	font-family: "arial";
 }
 
 
