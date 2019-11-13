@@ -44,7 +44,7 @@
                 @{
                     foreach (var cell in MineField)
                     {
-                        <div @onclick="@((a) => Reveal(cell, a))" class="@SelectCss(cell)" style="grid-row-start: @cell.Row + 1; grid-column-start: @cell.Column + 1;">@(cell is NumberCell c ? c.Number.ToString() : string.Empty) </div>
+                        <div @onclick="@((a) => Clicked(cell, a))" @ontouchstart="@((a) => Tapped(cell, a))" class="@SelectCss(cell)" style="grid-row-start: @cell.Row + 1; grid-column-start: @cell.Column + 1;">@(cell is NumberCell c ? c.Number.ToString() : string.Empty) </div>
                     }
                 }
             </div>
@@ -81,9 +81,17 @@
     }
 
 
-    private void Reveal(ICell cell, MouseEventArgs args)
+    private void Clicked(ICell cell, MouseEventArgs args)
     {
         if (args.CtrlKey)
+            MineField.PoseFlag(cell);
+        else
+            MineField.Reveal(cell);
+    }
+
+    private void Tapped(ICell cell, TouchEventArgs args)
+    {
+        if(args.Touches.Length > 1)
             MineField.PoseFlag(cell);
         else
             MineField.Reveal(cell);
