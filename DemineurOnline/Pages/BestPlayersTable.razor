@@ -1,0 +1,38 @@
+﻿@using global::Demineur.HighScores
+@using Microsoft.AspNetCore.Components
+
+<div class="bestplayer-border">
+    <h3>In memory of our greatest heroes</h3>
+
+    <RadzenGrid Data="@State.BestPlayers" TItem="Player">
+        <Columns>
+            <RadzenGridColumn TItem="Player" Property="Position" Title="N°" Width="40px" />
+            <RadzenGridColumn TItem="Player" Property="Name" Title="Name" />
+            <RadzenGridColumn TItem="Player" Property="Level" Title="Level" Width="60px" />
+        </Columns>
+    </RadzenGrid>
+</div>
+
+@code {
+    [CascadingParameter]
+    private GlobalStateProvider State { get; set; }
+}
+
+<style>
+
+    .bestplayer-border {
+        margin: 10px;
+        margin-top: 50px;
+        border: solid lightgrey thin;
+        border-radius: 5px;
+        padding: 2px;
+        box-shadow: 0 0 20px 0px black;
+        background-color: #8fbcd2;
+    }
+
+    .bestplayer-border > h3 {
+        color: black;
+        text-align: center;
+        font-family: 'Metal Mania', cursive;
+    }
+</style>

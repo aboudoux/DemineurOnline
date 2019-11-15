@@ -1,0 +1,35 @@
+﻿@using System.Net.Mime
+@using BlazorAnimate
+@using Microsoft.AspNetCore.Components
+
+<div class="end-animation">
+    <Animate Animation="Animations.ZoomIn" Duration="TimeSpan.FromSeconds(0.7)">
+        <img src="@Src" />
+        <button @onclick="@OnButtonClick">@ButtonText</button>
+    </Animate>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public  string Src { get; set; }
+
+    [Parameter]
+    public string ButtonText { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnButtonClick { get; set; }
+
+    [Parameter]
+    public string ButtonColor { get; set; }
+}
+
+<style>
+    .end-animation button {
+        background-color: @ButtonColor;
+        color: white;
+        width: 100px;
+        border-radius: 10px;
+    }
+</style>

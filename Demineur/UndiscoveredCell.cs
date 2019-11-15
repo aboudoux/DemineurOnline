@@ -13,7 +13,5 @@
 		public EmptyCell ToEmptyCell() => new EmptyCell(Row, Column);
 		public NumberCell ToNumberCell() => new NumberCell(Row, Column, NumberOfBombsAround);
 		public FlaggedCell ToFlaggedCell() => new FlaggedCell(Row, Column, this);
-
-
 	}
 }

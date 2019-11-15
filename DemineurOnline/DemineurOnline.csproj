@@ -6,10 +6,18 @@
 
   <ItemGroup>
     <PackageReference Include="BlazorAnimate" Version="1.0.0" />
+    <PackageReference Include="Blazored.Modal" Version="2.3.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
+    <PackageReference Include="Radzen.Blazor" Version="1.2.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Demineur\Demineur.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
 </Project>

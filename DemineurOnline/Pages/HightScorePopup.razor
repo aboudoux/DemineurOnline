@@ -1,0 +1,34 @@
+﻿@using global::Demineur.HighScores
+@using Microsoft.AspNetCore.Components
+@inject DialogService DialogService;
+
+    <div class="grid-container">
+        <RadzenLabel Text="Congratulation, you are in the top 10 of best players !"  style="justify-self : center;"/>
+        <RadzenTextBox style="width: 300px; justify-self : center; text-align: center; margin: 20px;" MaxLength="30" Placeholder="Enter your name" @oninput="@( a => Name = a.Value.ToString())" />
+        <RadzenButton style="justify-self : center;width: 20%;height: 50px;" Text="OK" Click="@(()=>OkClicked())" Disabled="@string.IsNullOrWhiteSpace(Name)"></RadzenButton>
+    </div>
+
+@code {
+
+    [CascadingParameter]
+    private GlobalStateProvider State { get; set; }
+
+    [Parameter]
+    public int Level { get; set; }
+
+    private string Name { get; set; }
+
+    public void OkClicked()
+    {
+        State.AddBestPlayer(Name, Level);
+        DialogService.Close();
+    }
+
+}
+
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-rows: 3;
+    }
+</style>

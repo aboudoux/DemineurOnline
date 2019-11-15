@@ -1,0 +1,66 @@
+﻿@using global::Demineur
+@using global::Demineur.HighScores
+@using Microsoft.AspNetCore.Components
+@inject DialogService DialogService
+@inject IHighScoreRepository HighScore;
+
+<CascadingValue Value="@this">
+    @ChildContent
+</CascadingValue>
+
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public Game Game { get; set; }
+    public MineField MineField { get; set; }
+
+    public void NextLevel() => MineField = Game.Next();
+
+    public IEnumerable<Player> BestPlayers => HighScore.GetBestPlayers().Take(10);
+
+
+    public void Restart()
+    {
+        OpenAddToHighScorePopup();
+        MineField = Game.Start();
+    }
+
+    public void Reveal(ICell cell)
+    {
+        MineField.Reveal(cell);
+        StateHasChanged();
+    }
+
+    public void PoseFlag(ICell cell)
+    {
+        MineField.PoseFlag(cell);
+        StateHasChanged();
+    }
+
+    public void AddBestPlayer(string name, int level)
+    {
+        HighScore.AddBesPlayer(name, level);
+        StateHasChanged();
+    }
+
+    public void ShowHelp()
+    {
+        DialogService.Open<Help>("Help");
+    }
+
+    protected override void OnInitialized()
+    {
+        Game = new Game();
+        MineField = Game.Start();
+        base.OnInitialized();
+    }
+
+    public void OpenAddToHighScorePopup()
+    {
+        if(HighScore.IsHighScore(Game.Level))
+            DialogService.Open<HightScorePopup>("Enter the legend of deminers", new Dictionary<string, object>(){ {"Level", Game.Level} });
+    }
+
+}
