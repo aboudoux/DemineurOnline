@@ -1,108 +1,49 @@
 ﻿@page "/demineur"
 @using global::Demineur
 @using BlazorAnimate
+@using Microsoft.AspNetCore.Components
 
 <div class="game-grid">
     <div class="flag-number tooltip">
         <span class="tooltiptext">CTRL+Click to put a flag</span>
         <img src="Images/flag.png" />
-        <text>@MineField.FlaggedCellCount</text>
+        <text>@State.MineField.FlaggedCellCount</text>
     </div>
     <div class="bomb-number">
-        <text>@MineField.BombCount</text>
+        <text>@State.MineField.BombCount</text>
         <img src="Images/bomb.png" />
     </div>
-    <text class="level"> @(MineField.Fail ? "Boom !" : MineField.Win ? "Good job !" : "LEVEL " + Game.Level)</text>
+    <text class="level"> @(State.MineField.Fail ? "Boom !" : State.MineField.Win ? "Good job !" : "LEVEL " + State.Game.Level)</text>
     <div id="image-left" class="mine-sign" />
     <div id="image-right" class="mine-sign" />
 
     <div class="minefield">
 
-        @if (MineField.Fail)
+        @if (State.MineField.Fail)
         {
-            <div class="end-animation">
-                <Animate Animation="Animations.ZoomIn" Duration="TimeSpan.FromSeconds(0.7)">
-                    <img src="Images/fail.jpg" />
-                    <button @onclick="Restart">RESTART</button>
-                </Animate>
-            </div>
-
+            <ShowImage Src="Images/fail.jpg" OnButtonClick="State.Restart" ButtonText="RESTART" ButtonColor="red"></ShowImage>
         }
-        else if (MineField.Win)
+        else if (State.MineField.Win)
         {
-            <div class="end-animation">
-                <Animate Animation="Animations.ZoomIn" Duration="TimeSpan.FromSeconds(0.7)">
-                    <img src="Images/win.jpg" />
-                    <button @onclick="NextLevel">NEXT LEVEL</button>
-
-                </Animate>
-            </div>
+            <ShowImage Src="Images/win.jpg" OnButtonClick="State.NextLevel" ButtonText="NEXT" ButtonColor="green"></ShowImage>
         }
         else
         {
-            <div class="container" style="grid-template-columns: repeat(@MineField.ZoneSize, 31px); grid-template-rows: repeat(@MineField.ZoneSize, 31px);">
-                @{
-                    foreach (var cell in MineField)
-                    {
-                        <div @onclick="@((a) => Clicked(cell, a))" @ontouchstart="@((a) => Tapped(cell, a))" class="@SelectCss(cell)" style="grid-row-start: @cell.Row + 1; grid-column-start: @cell.Column + 1;">@(cell is NumberCell c ? c.Number.ToString() : string.Empty) </div>
-                    }
-                }                              
-            </div>
+            <CheckerBoard />
         }
-            <div class="help">
-                <ul>
-                    <li>On computer : Left click on a cell to reveal it, CTRL + click to put a flag on a cell</li>
-                    <li>On a phone  : Tap on a cell to reveal it, put a finger out of the minefield + tap on a cell to put a flag on it</li>
-                </ul>                
-            </div>
-    </div>    
+
+        <BestPlayersTable />
+
+        <RadzenButton Text="HELP" ButtonStyle="ButtonStyle.Secondary" Click="State.ShowHelp" Style="display: block; margin: 10px auto 0px auto; box-shadow: -1px 0px 10px 0px black;"></RadzenButton>
+    </div>
 </div>
 
 @code {
-
-    private static Game Game { get; } = new Game();
-    private MineField MineField { get; set; } = Game.Start();
-
-    private void NextLevel() => MineField = Game.Next();
-
-    private void Restart() => MineField = Game.Start();
-    
-    private string SelectCss(ICell cell)
-    {
-        switch (cell)
-        {
-            case UndiscoveredCell c:
-                return "undiscovered-cell";
-            case NumberCell c:
-                return "number-cell";
-            case EmptyCell c:
-                return "empty-cell";
-            case BombCell c:
-                return "bomb-cell";
-            case FlaggedCell c:
-                return "flag-cell";
-            default:
-                throw new Exception("aucune css pour le type");
-        }
-    }
-
-
-    private void Clicked(ICell cell, MouseEventArgs args)
-    {
-        if (args.CtrlKey)
-            MineField.PoseFlag(cell);
-        else
-            MineField.Reveal(cell);
-    }
-
-    private void Tapped(ICell cell, TouchEventArgs args)
-    {
-        if(args.Touches.Length > 1)
-            MineField.PoseFlag(cell);
-        else
-            MineField.Reveal(cell);
-    }
+    [CascadingParameter]
+    private GlobalStateProvider State { get; set; }
 }
+
+
 
 
 

@@ -1,0 +1,102 @@
+﻿@using global::Demineur
+@using Microsoft.AspNetCore.Components
+
+
+<div class="container" style="grid-template-columns: repeat(@State.MineField.ZoneSize, 31px); grid-template-rows: repeat(@State.MineField.ZoneSize, 31px);">
+    @{
+        foreach (var cell in State.MineField)
+        {
+            <div @onclick="@((a) => Clicked(cell, a))" @ontouchstart="@((a) => Tapped(cell, a))" class="@SelectCss(cell)" style="grid-row-start: @cell.Row + 1; grid-column-start: @cell.Column + 1;">@(cell is NumberCell c ? c.Number.ToString() : string.Empty) </div>
+        }
+    }                              
+ </div>
+
+@code {
+
+    [CascadingParameter]
+    private GlobalStateProvider State { get; set; }
+
+    private string SelectCss(ICell cell)
+    {
+        switch (cell)
+        {
+            case UndiscoveredCell _:
+                return "undiscovered-cell";
+            case NumberCell _:
+                return "number-cell";
+            case EmptyCell _:
+                return "empty-cell";
+            case BombCell _:
+                return "bomb-cell";
+            case FlaggedCell _:
+                return "flag-cell";
+            default:
+                throw new Exception("aucune css pour le type");
+        }
+    }
+
+    private void Clicked(ICell cell, MouseEventArgs args)
+    {
+        if (args.CtrlKey)
+            State.PoseFlag(cell);
+        else
+            State.Reveal(cell);
+    }
+
+    private void Tapped(ICell cell, TouchEventArgs args)
+    {
+        if(args.Touches.Length > 1)
+            State.PoseFlag(cell);
+        else
+            State.Reveal(cell);
+    }
+}
+
+<style>
+    .undiscovered-cell {
+        width: 30px;
+        height: 30px;
+        background-color: gainsboro;
+    }
+
+    .undiscovered-cell:hover {
+        border: solid black 1px;
+        background-color: gainsboro;
+        width: 28px;
+        height: 28px;
+    }
+
+    .empty-cell {
+        width: 30px;
+        height: 30px;
+        background-color: whitesmoke;
+    }
+
+    .number-cell {
+        width: 30px;
+        height: 30px;
+        background-color: gainsboro;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 30px;
+        font-weight: bold;
+        color: #1b6ec2;
+
+    }
+
+    .bomb-cell {
+        width: 30px;
+        height: 30px;
+        background-color: gainsboro;
+        content: url("../Images/bomb.png");
+    }
+
+    .flag-cell {
+        width: 30px;
+        height: 30px;
+        content: url("../Images/flag.png");
+        background-color: gainsboro;
+    }
+
+
+</style>
