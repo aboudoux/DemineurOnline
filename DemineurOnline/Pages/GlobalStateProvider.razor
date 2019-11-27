@@ -20,11 +20,11 @@
 
     public IEnumerable<Player> BestPlayers => HighScore.GetBestPlayers().Take(10);
 
-    private bool PlayerAddedInHightScore { get; set; }
+    private bool PlayerAddedInHighScore { get; set; }
 
     public void Restart()
     {
-        PlayerAddedInHightScore = false;
+        PlayerAddedInHighScore = false;
         MineField = Game.Start();
     }
 
@@ -60,9 +60,9 @@
 
     public void OpenAddToHighScorePopup()
     {
-        if (!PlayerAddedInHightScore && HighScore.IsHighScore(Game.Level))
+        if (!PlayerAddedInHighScore && HighScore.IsHighScore(Game.Level))
         {
-            PlayerAddedInHightScore = true;
+            PlayerAddedInHighScore = true;
             DialogService.Open<HightScorePopup>("Enter the legend of deminers", new Dictionary<string, object>() {{"Level", Game.Level}});
         }
     }

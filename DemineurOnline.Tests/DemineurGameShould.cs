@@ -98,12 +98,22 @@ namespace DemineurOnline.Tests
 		}
 
 		[Fact]
-		public void WinIfAllFlagArePlacedOnBomb()
+		public void DontWinfAllFlagArePlacedOnBombAndCellNotRevelated()
 		{
 			var game = MineField.Create(5, 10);
-			game.Where(a=>(a as UndiscoveredCell).HasBomb).ForEach(cell => game.PoseFlag(cell));
+			game.OfType<UndiscoveredCell>().Where(a=>a.HasBomb).ForEach(cell => game.PoseFlag(cell));
+			game.Win.Should().BeFalse();
+		}
+
+		[Fact]
+		public void WinfOnlyIfAllFlagArePlacedOnBombAndCellRevelated()
+		{
+			var game = MineField.Create(5, 10);
+			game.OfType<UndiscoveredCell>().Where(a => a.HasBomb).ForEach(cell => game.PoseFlag(cell));
+			game.OfType<UndiscoveredCell>().Where(a => !a.HasBomb).ForEach(cell => game.Reveal(cell));
 			game.Win.Should().BeTrue();
 		}
+
 
 		[Theory]
 		[InlineData(-1,0)]
