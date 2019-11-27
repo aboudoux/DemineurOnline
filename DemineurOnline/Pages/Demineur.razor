@@ -22,6 +22,7 @@
         @if (State.MineField.Fail)
         {
             <ShowImage Src="Images/fail.jpg" OnButtonClick="State.Restart" ButtonText="RESTART" ButtonColor="red"></ShowImage>
+            State.OpenAddToHighScorePopup();
         }
         else if (State.MineField.Win)
         {

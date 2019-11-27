@@ -13,7 +13,7 @@ namespace Demineur
 		public bool Fail => _cells.OfType<BombCell>().Any();
 		public int FlaggedCellCount { get; private set; }
 		public int BombCount { get; }
-		public bool Win => FlaggedCellCount == BombCount && _cells.OfType<FlaggedCell>().All(a => a.HasBomb);
+		public bool Win => FlaggedCellCount == BombCount && _cells.OfType<FlaggedCell>().All(a => a.HasBomb) && !_cells.OfType<UndiscoveredCell>().Any();
 
 		public int ZoneSize { get; }
 
